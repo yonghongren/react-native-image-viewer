@@ -93,7 +93,7 @@ export class Props {
   /**
    * 单击回调
    */
-   public onClick?:  (close?: () => any, currentShowIndex?: number) => void = () => {
+   public onClick?:  (locationX: number, locationY: number, pageX: number, pageY: number, close?: () => any, currentShowIndex?: number) => void = () => {
     //
   };
 
