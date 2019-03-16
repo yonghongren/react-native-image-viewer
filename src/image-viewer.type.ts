@@ -143,7 +143,7 @@ export class Props {
   /**
    * Render image component
    */
-  public renderImage?: (props: any) => React.ReactElement<any> = (props: any) => {
+  public renderImage?: (currentIndex: number, props: any) => React.ReactElement<any> = (props: any) => {
     return React.createElement(Image, props);
   };
 
@@ -202,6 +202,16 @@ export class Props {
   public onChange?: (index?: number) => void = () => {
     //
   };
+
+  /**
+   * allow pan to move image
+   */
+  panToMove?: boolean = true;
+
+  /**
+   * on single-finger touch move
+   */
+  onTouchMove?:  (x: number, y:number) => void = () => {}
 }
 
 export class State {

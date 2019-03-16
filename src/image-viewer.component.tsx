@@ -306,6 +306,11 @@ export default class ImageViewer extends React.Component<Props, State> {
     }).start();
 
     const nextIndex = (this.state.currentShowIndex || 0) - 1;
+    
+    if (this.props.onChange) {
+      // Notify change and leave the higher layer to update state.
+      return this.props.onChange(nextIndex);
+    }
 
     this.setState(
       {
@@ -339,6 +344,10 @@ export default class ImageViewer extends React.Component<Props, State> {
     }).start();
 
     const nextIndex = (this.state.currentShowIndex || 0) + 1;
+
+    if (this.props.onChange) {
+      return this.props.onChange(nextIndex);
+    }
 
     this.setState(
       {
@@ -477,6 +486,8 @@ export default class ImageViewer extends React.Component<Props, State> {
           pinchToZoom={this.props.enableImageZoom}
           enableDoubleClickZoom={this.props.enableImageZoom}
           doubleClickInterval={this.props.doubleClickInterval}
+          panToMove={this.props.panToMove}
+          onTouchMove={this.props.onTouchMove}
           {...others}
         >
           {children}
@@ -545,10 +556,12 @@ export default class ImageViewer extends React.Component<Props, State> {
               swipeDownThreshold={this.props.swipeDownThreshold}
               onSwipeDown={this.handleSwipeDown}
               pinchToZoom={this.props.enableImageZoom}
+              panToMove={this.props.panToMove}
+              onTouchMove={this.props.onTouchMove}
               enableDoubleClickZoom={this.props.enableImageZoom}
               doubleClickInterval={this.props.doubleClickInterval}
             >
-              {this!.props!.renderImage!(image.props)}
+              {this!.props!.renderImage!(index, image.props)}
             </ImageZoom>
           );
         case 'fail':
@@ -560,7 +573,7 @@ export default class ImageViewer extends React.Component<Props, State> {
               imageHeight={this.props.failImageSource ? this.props.failImageSource.height : screenHeight}
             >
               {this.props.failImageSource &&
-                this!.props!.renderImage!({
+                this!.props!.renderImage!(index, {
                   source: {
                     uri: this.props.failImageSource.url
                   },
